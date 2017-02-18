@@ -25,6 +25,14 @@ showHelp() {
   echo '  $ backup-docker-volume.sh -f pg-stage -d /var/lib/postgresql/data -p pg-stage'
 }
 
+timestamp() {
+  if [[ "`uname`" == 'Darwin' ]]; then
+    date -j -u "+%Y-%m-%dT%H-%M-%SZ"
+  else
+    date +%Y-%m-%dT%H-%M-%SZ --utc
+  fi
+}
+
 while [[ $# -gt 0 ]]
 do
   key="$1"
@@ -65,7 +73,7 @@ done
 : ${backup_file_prefix:?"Please provide -p|--backup-file-prefix. See --help for more details"}
 
 backups_dir=${backups_dir:-$(pwd)/backup}
-backup_file_name="${backup_file_prefix}-`date +%Y-%m-%dT%H-%M-%SZ --utc`.tar.gz"
+backup_file_name="${backup_file_prefix}-`timestamp`.tar.gz"
 
 BACKUP_CMD="tar --totals -z -C ${volume_dir} -cf /backup/${backup_file_name} ."
 
