@@ -75,7 +75,8 @@ done
 backups_dir=${backups_dir:-$(pwd)/backup}
 backup_file_name="${backup_file_prefix}-`timestamp`.tar.gz"
 
-BACKUP_CMD="tar --totals -z -C ${volume_dir} -cf /backup/${backup_file_name} ."
+#TODO: --warning=no-file-changed is required to allow backups on running containers. Perhaps make it optional
+BACKUP_CMD="tar --warning=no-file-changed --totals -z -C ${volume_dir} -cf /backup/${backup_file_name} ."
 
 echo Starting backup of "${volumes_from}" volume
 echo - volume dir "${volume_dir}"
